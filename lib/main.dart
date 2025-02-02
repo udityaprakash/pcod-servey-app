@@ -33,8 +33,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/splash',
       routes: {
-        '/splash': (context) => const SplashScreen(),
-        '/signup': (context) => const SignUpScreen(),
+        '/splash': (context) => const SplashSignUpScreen(),
+        // '/signup': (context) => const SignUpScreen(),
         '/questions': (context) => const QuestionScreen(),
         '/thankyou': (context) => const ThankYouScreen(),
       },
@@ -42,19 +42,25 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class SplashSignUpScreen extends StatefulWidget {
+  const SplashSignUpScreen({super.key});
 
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  _SplashSignUpScreenState createState() => _SplashSignUpScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashSignUpScreenState extends State<SplashSignUpScreen> {
+  bool showButton = false;
+  double logoPosition = 0.0;
+
   @override
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, '/signup');
+      setState(() {
+        logoPosition = -50;
+        showButton = true;
+      });
     });
   }
 
@@ -63,26 +69,33 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Image.asset('assets/images/pcosSurveyLogo.png'),
-      ),
-    );
-  }
-}
-
-class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: Center(
-        child: CustomButton(
-          text: 'Continue with Google',
-          onPressed: () => Navigator.pushReplacementNamed(context, '/questions'),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 800),
+              curve: Curves.easeInOut,
+              top: MediaQuery.of(context).size.height / 3 + logoPosition,
+              child: Image.asset(
+                'assets/images/pcosSurveyLogo.png',
+                width: 350,
+              ),
+            ),
+            AnimatedOpacity(
+              duration: const Duration(milliseconds: 800),
+              opacity: showButton ? 1.0 : 0.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 400),
+                  CustomButton(
+                    text: 'Continue with Google',
+                    onPressed: () => Navigator.pushReplacementNamed(context, '/questions'),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
