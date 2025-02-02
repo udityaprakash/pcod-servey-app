@@ -1,0 +1,246 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Survey App',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.black,
+          brightness: Brightness.light,
+          primary: Colors.black,
+          secondary: Colors.white,
+        ),
+        useMaterial3: true,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.black,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          ),
+        ),
+      ),
+      initialRoute: '/splash',
+      routes: {
+        '/splash': (context) => const SplashScreen(),
+        '/signup': (context) => const SignUpScreen(),
+        '/questions': (context) => const QuestionScreen(),
+        '/thankyou': (context) => const ThankYouScreen(),
+      },
+    );
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.pushReplacementNamed(context, '/signup');
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Image.asset('assets/images/pcosSurveyLogo.png'),
+      ),
+    );
+  }
+}
+
+class SignUpScreen extends StatelessWidget {
+  const SignUpScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: Center(
+        child: CustomButton(
+          text: 'Continue with Google',
+          onPressed: () => Navigator.pushReplacementNamed(context, '/questions'),
+        ),
+      ),
+    );
+  }
+}
+
+class QuestionScreen extends StatefulWidget {
+  const QuestionScreen({super.key});
+
+  @override
+  _QuestionScreenState createState() => _QuestionScreenState();
+}
+
+class _QuestionScreenState extends State<QuestionScreen> {
+  final Map<int, Map<String, dynamic>> _questions = {
+    0: {
+      'question': 'What is your age group?',
+      'options': ['18-25', '26-35', '36-45', '46+']
+    },
+    1: {
+      'question': 'How often do you exercise?',
+      'options': ['Daily', 'Weekly', 'Monthly', 'Never']
+    },
+    2: {
+      'question': 'Please rate your Daily sleep Cycle?',
+      'options': ['2-4 Hr Sleep', '4-6 Hr Sleep', '6-9 Hr Sleep', 'more then 9Hr Sleep']
+    },
+  };
+
+  int _currentQuestionIndex = 0;
+  String? _selectedAnswer;
+
+  void _nextQuestion() {
+    if (_currentQuestionIndex < _questions.length - 1) {
+      setState(() {
+        _currentQuestionIndex++;
+        _selectedAnswer = null;
+      });
+    } else {
+      Navigator.pushReplacementNamed(context, '/thankyou');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final currentQuestion = _questions[_currentQuestionIndex]!;
+    
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Question ${_currentQuestionIndex + 1}/${_questions.length}'),
+        backgroundColor: Colors.white,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              currentQuestion['question'] as String,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 30),
+            ...(currentQuestion['options'] as List<String>).map((option) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: OptionButton(
+                  text: option,
+                  isSelected: _selectedAnswer == option,
+                  onPressed: () => setState(() => _selectedAnswer = option),
+                ),
+              );
+            }),
+            const Spacer(),
+            Center(
+              child: CustomButton(
+                text: _currentQuestionIndex == _questions.length - 1 
+                    ? 'Finish' 
+                    : 'Next Question',
+                onPressed: _selectedAnswer != null ? _nextQuestion : null,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ThankYouScreen extends StatelessWidget {
+  const ThankYouScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: Text(
+          'Thank you for attempting this!',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomButton extends StatelessWidget {
+  final String text;
+  final VoidCallback? onPressed;
+
+  const CustomButton({
+    super.key,
+    required this.text,
+    this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Text(text, style: const TextStyle(fontSize: 18)),
+      style: ElevatedButton.styleFrom(
+        maximumSize: const Size(double.infinity, 50),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(7),
+        ),
+      ),
+    );
+  }
+}
+
+class OptionButton extends StatelessWidget {
+  final String text;
+  final bool isSelected;
+  final VoidCallback onPressed;
+
+  const OptionButton({
+    super.key,
+    required this.text,
+    required this.isSelected,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity > 400 ? 400 : double.infinity,
+      child: OutlinedButton(
+        style: OutlinedButton.styleFrom(
+          backgroundColor: isSelected ? Colors.black : Colors.white,
+          foregroundColor: isSelected ? Colors.white : Colors.black,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(7),
+          ),
+          side: const BorderSide(color: Colors.black),
+        ),
+        onPressed: onPressed,
+        child: Text(text),
+      ),
+    );
+  }
+}
