@@ -199,10 +199,8 @@ class _displaysomethingState extends State<displaysomething> {
   @override
 
   Widget build(BuildContext context) {
-    // Retrieve the arguments
     final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
 
-    // Extract the 'name' parameter
     String name = args?['name'] ?? 'Guest';
 
     void initState() {
