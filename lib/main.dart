@@ -130,7 +130,7 @@ class _SplashSignUpScreenState extends State<SplashSignUpScreen> {
 }
 
 class googleapi {
-  static final _googleSignIn = GoogleSignIn();
+  static final _googleSignIn = GoogleSignIn(clientId: '710390705852-r4tfotgabfcr4iqpbqjrnu04hkceh17m.apps.googleusercontent.com');
   static Future<GoogleSignInAccount?> signIn() => _googleSignIn.signIn();
   static GoogleSignInAccount? userinfo() => _googleSignIn.currentUser;
   static Future<void> signOut() => _googleSignIn.signOut();
