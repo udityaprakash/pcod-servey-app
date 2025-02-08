@@ -2,7 +2,7 @@ import 'dart:developer';
 // import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:pcos_survey_app/google_api.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,10 +13,10 @@ var email = '';
 var attempt = 0;
 
 bool checkPlatform() {
-  if(kIsWeb){
+  if (kIsWeb) {
     print("Running on Web");
     return false;
-  } else{
+  } else {
     print("Running on Mobile");
     return true;
   }
@@ -93,41 +93,59 @@ class _SplashSignUpScreenState extends State<SplashSignUpScreen> {
     });
   }
 
+  // Future<void> _handleSignIn(BuildContext context) async {
+  //   try {
+  //     if (!checkPlatform()) {
+  //       await googleapiweb.signIn();
+  //       log(googleapiweb.userinfo().toString());
+  //       name = googleapiweb.userinfo()!.displayName!;
+  //       email = googleapiweb.userinfo()!.email;
+  //       attempt = 1;
+  //       Navigator.pushReplacementNamed(
+  //         context,
+  //         '/display',
+  //         arguments: {'name': name},
+  //       );
+  //       // Navigator.pushReplacementNamed(context, '/questions');
+  //     } else {
+  //       await googleapi.signIn();
+  //       log(googleapi.userinfo().toString());
+  //       name = googleapi.userinfo()!.displayName!;
+  //       email = googleapi.userinfo()!.email;
+  //       attempt = 1;
+  //       Navigator.pushReplacementNamed(context, '/questions');
+  //     }
+  //   } catch (error) {
+  //     log(error.toString());
+  //     Navigator.pushNamed(
+  //         context,
+  //         '/display',
+  //         arguments: {'name': error.toString()},
+  //       );
+  //   }
+  // }
+
   Future<void> _handleSignIn(BuildContext context) async {
     try {
-      if (!checkPlatform()) {
-        await googleapiweb.signIn();
-        log(googleapiweb.userinfo().toString());
-        name = googleapiweb.userinfo()!.displayName!;
-        email = googleapiweb.userinfo()!.email;
-        attempt = 1;
-        Navigator.pushReplacementNamed(
-          context,
-          '/display',
-          arguments: {'name': name},
-        );
-        // Navigator.pushReplacementNamed(context, '/questions');
-      } else {
-        await googleapi.signIn();
-        log(googleapi.userinfo().toString());
-        name = googleapi.userinfo()!.displayName!;
-        email = googleapi.userinfo()!.email;
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => UserDetailsScreen(user: googleapi.userinfo()),
-        //   ),
-        // );
-        attempt = 1;
-        Navigator.pushReplacementNamed(context, '/questions');
-      }
+      await GoogleApi.signIn();
+      log(GoogleApi.displayName.toString());
+
+      name = GoogleApi.displayName ?? 'Unknown User';
+      email = GoogleApi.email ?? 'No Email';
+      attempt = 1;
+
+      Navigator.pushReplacementNamed(
+        context,
+        '/display',
+        arguments: {'name': name},
+      );
     } catch (error) {
       log(error.toString());
       Navigator.pushNamed(
-          context,
-          '/display',
-          arguments: {'name': error.toString()},
-        );
+        context,
+        '/display',
+        arguments: {'name': error.toString()},
+      );
     }
   }
 
@@ -172,21 +190,21 @@ class _SplashSignUpScreenState extends State<SplashSignUpScreen> {
   }
 }
 
-class googleapi {
-  static final _googleSignIn = GoogleSignIn();
-  static Future<GoogleSignInAccount?> signIn() => _googleSignIn.signIn();
-  static GoogleSignInAccount? userinfo() => _googleSignIn.currentUser;
-  static Future<void> signOut() => _googleSignIn.signOut();
-}
+// class googleapi {
+//   static final _googleSignIn = GoogleSignIn();
+//   static Future<GoogleSignInAccount?> signIn() => _googleSignIn.signIn();
+//   static GoogleSignInAccount? userinfo() => _googleSignIn.currentUser;
+//   static Future<void> signOut() => _googleSignIn.signOut();
+// }
 
-class googleapiweb {
-  static final _googleSignIn = GoogleSignIn(
-    clientId: '710390705852-r4tfotgabfcr4iqpbqjrnu04hkceh17m.apps.googleusercontent.com'
-    );
-  static Future<GoogleSignInAccount?> signIn() => _googleSignIn.signIn();
-  static GoogleSignInAccount? userinfo() => _googleSignIn.currentUser;
-  static Future<void> signOut() => _googleSignIn.signOut();
-}
+// class googleapiweb {
+//   static final _googleSignIn = GoogleSignIn(
+//     clientId: '710390705852-r4tfotgabfcr4iqpbqjrnu04hkceh17m.apps.googleusercontent.com'
+//     );
+//   static Future<GoogleSignInAccount?> signIn() => _googleSignIn.signIn();
+//   static GoogleSignInAccount? userinfo() => _googleSignIn.currentUser;
+//   static Future<void> signOut() => _googleSignIn.signOut();
+// }
 
 class displaysomething extends StatefulWidget {
   const displaysomething({super.key});
@@ -196,23 +214,23 @@ class displaysomething extends StatefulWidget {
 }
 
 class _displaysomethingState extends State<displaysomething> {
-  @override
-
-  Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
-
-    String name = args?['name'] ?? 'Guest';
-
-    void initState() {
+  void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), () {
-      // setState(() {
+    if (attempt == 1) {
+      Future.delayed(const Duration(seconds: 3), () {
+        // setState(() {
         Navigator.pushReplacementNamed(context, '/questions');
-      // });
-    });
+        // });
+      });
+    }
   }
 
+  @override
+  Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
 
+    String name = args?['name'] ?? 'Guest';
 
     return Scaffold(
       appBar: AppBar(title: Text("displaying something")),
@@ -272,8 +290,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
       // setState(() {
-      if(attempt != 1){
-
+      if (attempt != 1) {
         Navigator.pushReplacementNamed(context, '/splash');
       }
       // });
