@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -9,6 +10,20 @@ void main() {
 
 var name = '';
 var email = '';
+var attempt = 0;
+
+bool checkPlatform() {
+  if (Platform.isAndroid) {
+    print("Running on Android");
+    return true;
+  } else if (Platform.isIOS) {
+    print("Running on iOS");
+    return true;
+  } else {
+    print("Running on another platform");
+    return false;
+  }
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -41,6 +56,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/splash': (context) => const SplashSignUpScreen(),
         // '/signup': (context) => const SignUpScreen(),
+        '/display': (context) => displaysomething(),
         '/questions': (context) => const QuestionScreen(),
         '/thankyou': (context) => const ThankYouScreen(),
       },
@@ -72,19 +88,39 @@ class _SplashSignUpScreenState extends State<SplashSignUpScreen> {
 
   Future<void> _handleSignIn(BuildContext context) async {
     try {
-      await googleapi.signIn();
-      log(googleapi.userinfo().toString());
-      name = googleapi.userinfo()!.displayName!;
-      email = googleapi.userinfo()!.email;
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => UserDetailsScreen(user: googleapi.userinfo()),
-      //   ),
-      // );
-      Navigator.pushReplacementNamed(context, '/questions');
+      if (!checkPlatform()) {
+        await googleapiweb.signIn();
+        log(googleapiweb.userinfo().toString());
+        name = googleapiweb.userinfo()!.displayName!;
+        email = googleapiweb.userinfo()!.email;
+        attempt = 1;
+        Navigator.pushReplacementNamed(
+          context,
+          '/display',
+          arguments: {'name': name},
+        );
+        // Navigator.pushReplacementNamed(context, '/questions');
+      } else {
+        await googleapi.signIn();
+        log(googleapi.userinfo().toString());
+        name = googleapi.userinfo()!.displayName!;
+        email = googleapi.userinfo()!.email;
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => UserDetailsScreen(user: googleapi.userinfo()),
+        //   ),
+        // );
+        attempt = 1;
+        Navigator.pushReplacementNamed(context, '/questions');
+      }
     } catch (error) {
       log(error.toString());
+      Navigator.pushNamed(
+          context,
+          '/display',
+          arguments: {'name': error.toString()},
+        );
     }
   }
 
@@ -130,10 +166,59 @@ class _SplashSignUpScreenState extends State<SplashSignUpScreen> {
 }
 
 class googleapi {
-  static final _googleSignIn = GoogleSignIn(clientId: '710390705852-r4tfotgabfcr4iqpbqjrnu04hkceh17m.apps.googleusercontent.com');
+  static final _googleSignIn = GoogleSignIn();
   static Future<GoogleSignInAccount?> signIn() => _googleSignIn.signIn();
   static GoogleSignInAccount? userinfo() => _googleSignIn.currentUser;
   static Future<void> signOut() => _googleSignIn.signOut();
+}
+
+class googleapiweb {
+  static final _googleSignIn = GoogleSignIn(
+    clientId: '710390705852-r4tfotgabfcr4iqpbqjrnu04hkceh17m.apps.googleusercontent.com'
+    );
+  static Future<GoogleSignInAccount?> signIn() => _googleSignIn.signIn();
+  static GoogleSignInAccount? userinfo() => _googleSignIn.currentUser;
+  static Future<void> signOut() => _googleSignIn.signOut();
+}
+
+class displaysomething extends StatefulWidget {
+  const displaysomething({super.key});
+
+  @override
+  State<displaysomething> createState() => _displaysomethingState();
+}
+
+class _displaysomethingState extends State<displaysomething> {
+  @override
+
+  Widget build(BuildContext context) {
+    // Retrieve the arguments
+    final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+
+    // Extract the 'name' parameter
+    String name = args?['name'] ?? 'Guest';
+
+    void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 3), () {
+      // setState(() {
+        Navigator.pushReplacementNamed(context, '/questions');
+      // });
+    });
+  }
+
+
+
+    return Scaffold(
+      appBar: AppBar(title: Text("displaying something")),
+      body: Center(
+        child: Text(
+          "Welcome, $name!",
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
 }
 
 class QuestionScreen extends StatefulWidget {
@@ -176,6 +261,18 @@ class _QuestionScreenState extends State<QuestionScreen> {
     } else {
       Navigator.pushReplacementNamed(context, '/thankyou');
     }
+  }
+
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 2), () {
+      // setState(() {
+      if(attempt != 1){
+
+        Navigator.pushReplacementNamed(context, '/splash');
+      }
+      // });
+    });
   }
 
   @override
