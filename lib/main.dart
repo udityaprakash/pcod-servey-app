@@ -1,8 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
+var name = '';
+var email = '';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -64,6 +70,24 @@ class _SplashSignUpScreenState extends State<SplashSignUpScreen> {
     });
   }
 
+  Future<void> _handleSignIn(BuildContext context) async {
+    try {
+      await googleapi.signIn();
+      log(googleapi.userinfo().toString());
+      name = googleapi.userinfo()!.displayName!;
+      email = googleapi.userinfo()!.email;
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => UserDetailsScreen(user: googleapi.userinfo()),
+      //   ),
+      // );
+      Navigator.pushReplacementNamed(context, '/questions');
+    } catch (error) {
+      log(error.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,7 +114,10 @@ class _SplashSignUpScreenState extends State<SplashSignUpScreen> {
                   const SizedBox(height: 400),
                   CustomButton(
                     text: 'Continue with Google',
-                    onPressed: () => Navigator.pushReplacementNamed(context, '/questions'),
+                    onPressed: () {
+                      _handleSignIn(context);
+                      // Navigator.pushNamed(context, '/questions');
+                    },
                   ),
                 ],
               ),
@@ -100,6 +127,13 @@ class _SplashSignUpScreenState extends State<SplashSignUpScreen> {
       ),
     );
   }
+}
+
+class googleapi {
+  static final _googleSignIn = GoogleSignIn();
+  static Future<GoogleSignInAccount?> signIn() => _googleSignIn.signIn();
+  static GoogleSignInAccount? userinfo() => _googleSignIn.currentUser;
+  static Future<void> signOut() => _googleSignIn.signOut();
 }
 
 class QuestionScreen extends StatefulWidget {
@@ -121,7 +155,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
     },
     2: {
       'question': 'Please rate your Daily sleep Cycle?',
-      'options': ['2-4 Hr Sleep', '4-6 Hr Sleep', '6-9 Hr Sleep', 'more then 9Hr Sleep']
+      'options': [
+        '2-4 Hr Sleep',
+        '4-6 Hr Sleep',
+        '6-9 Hr Sleep',
+        'more then 9Hr Sleep'
+      ]
     },
   };
 
@@ -142,10 +181,11 @@ class _QuestionScreenState extends State<QuestionScreen> {
   @override
   Widget build(BuildContext context) {
     final currentQuestion = _questions[_currentQuestionIndex]!;
-    
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Question ${_currentQuestionIndex + 1}/${_questions.length}'),
+        title:
+            Text('Question ${_currentQuestionIndex + 1}/${_questions.length}'),
         backgroundColor: Colors.white,
       ),
       body: Padding(
@@ -171,8 +211,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
             const Spacer(),
             Center(
               child: CustomButton(
-                text: _currentQuestionIndex == _questions.length - 1 
-                    ? 'Finish' 
+                text: _currentQuestionIndex == _questions.length - 1
+                    ? 'Finish'
                     : 'Next Question',
                 onPressed: _selectedAnswer != null ? _nextQuestion : null,
               ),
