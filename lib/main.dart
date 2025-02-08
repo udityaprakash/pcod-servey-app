@@ -1,6 +1,6 @@
 import 'dart:developer';
-import 'dart:io';
-
+// import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -13,16 +13,23 @@ var email = '';
 var attempt = 0;
 
 bool checkPlatform() {
-  if (Platform.isAndroid) {
-    print("Running on Android");
-    return true;
-  } else if (Platform.isIOS) {
-    print("Running on iOS");
-    return true;
-  } else {
-    print("Running on another platform");
+  if(kIsWeb){
+    print("Running on Web");
     return false;
+  } else{
+    print("Running on Mobile");
+    return true;
   }
+  // if (Platform.isAndroid) {
+  //   print("Running on Android");
+  //   return true;
+  // } else if (Platform.isIOS) {
+  //   print("Running on iOS");
+  //   return true;
+  // } else {
+  //   print("Running on another platform");
+  //   return false;
+  // }
 }
 
 class MyApp extends StatelessWidget {
