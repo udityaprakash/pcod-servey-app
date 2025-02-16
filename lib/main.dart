@@ -266,11 +266,13 @@ class ThankYouScreen extends StatelessWidget {
 class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
+  // final bool? isWeb;
 
   const CustomButton({
     super.key,
     required this.text,
-    this.onPressed,
+    this.onPressed
+    // this.isWeb,
   });
 
   @override
@@ -289,34 +291,34 @@ class CustomButton extends StatelessWidget {
   }
 }
 
-class OptionButton extends StatelessWidget {
-  final String text;
-  final bool isSelected;
-  final VoidCallback onPressed;
+// class OptionButton extends StatelessWidget {
+//   final String text;
+//   final bool isSelected;
+//   final VoidCallback onPressed;
 
-  const OptionButton({
-    super.key,
-    required this.text,
-    required this.isSelected,
-    required this.onPressed,
-  });
+//   const OptionButton({
+//     super.key,
+//     required this.text,
+//     required this.isSelected,
+//     required this.onPressed,
+//   });
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity > 400 ? 400 : double.infinity,
-      child: OutlinedButton(
-        style: OutlinedButton.styleFrom(
-          backgroundColor: isSelected ? Colors.black : Colors.white,
-          foregroundColor: isSelected ? Colors.white : Colors.black,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(7),
-          ),
-          side: const BorderSide(color: Colors.black),
-        ),
-        onPressed: onPressed,
-        child: Text(text),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: double.infinity > 400 ? 400 : double.infinity,
+//       child: OutlinedButton(
+//         style: OutlinedButton.styleFrom(
+//           backgroundColor: isSelected ? Colors.black : Colors.white,
+//           foregroundColor: isSelected ? Colors.white : Colors.black,
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(7),
+//           ),
+//           side: const BorderSide(color: Colors.black),
+//         ),
+//         onPressed: onPressed,
+//         child: Text(text),
+//       ),
+//     );
+//   }
+// }

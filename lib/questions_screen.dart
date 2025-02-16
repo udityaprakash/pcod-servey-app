@@ -79,8 +79,15 @@ class _QuestionScreenState extends State<QuestionScreen> {
                         }
                       }
 
-                      return Row(
-                        children: rowChildren,
+                      return IntrinsicHeight(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            ...rowChildren,
+                            if (isWideScreen && rowChildren.length == 1)
+                              const Expanded(child: SizedBox()),
+                          ],
+                        ),
                       );
                     },
                   );
@@ -88,11 +95,19 @@ class _QuestionScreenState extends State<QuestionScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            CustomButton(text: _currentSectionIndex == _sections.length - 1
-                    ? 'Finish'
-                    : 'Next Section', onPressed:  _selectedAnswers.length == questions.length
-                    ? _nextSection
-                    : null,),
+            Container(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: Column(
+                crossAxisAlignment: isWideScreen ? CrossAxisAlignment.end : CrossAxisAlignment.stretch,
+                children: [
+                  CustomButton(text: _currentSectionIndex == _sections.length - 1
+                          ? 'Finish'
+                          : 'Next Section', onPressed:  _selectedAnswers.length == questions.length
+                          ? _nextSection
+                          : null,),
+                ],
+              ),
+            ),
           ],
         ),
       ),
