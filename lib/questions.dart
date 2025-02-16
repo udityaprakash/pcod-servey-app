@@ -1,168 +1,223 @@
-// const questionTemplate = {
-//     0:{
-//       'sectionname': 'Mental Health',
-//       'set' : {
-//        0: {
-//       'question': 'Do you often feel stressed, anxious, or down?',
-//       'options': ['Always','Very Often', 'Sometimes', 'Never']
-//       },
-//       1: {
-//       'question': 'I rarely feel stressed, anxious, or down.',
-//       'options': ['Yes', 'No']
-//       },
-//       }
-//     },
-//     2: {
-//       'question': 'I generally feel calm and relaxed.',
-//       'options': ['Yes', 'No']
-//     },
-//     3: {
-//       'question': 'I do not frequently experience anxiety, stress, or low mood. ',
-//       'options': ['Yes', 'No']
-//     },
-//     4: {
-//       'question': 'Do you frequently have trouble concentrating or feel mentally foggy? ',
-//       'options': ['Yes', 'No']
-//     },
-//     5: {
-//       'question': 'I rarely have trouble concentrating or feel mentally foggy.',
-//       'options': ['Yes', 'No']
-//     },
-//     6: {
-//       'question': 'I usually find it easy to concentrate.',
-//       'options': ['Yes', 'No']
-//     },
-//     7: {
-//       'question': 'I do not experience mental fogginess.',
-//       'options': ['Yes', 'No']
-//     },
-//     8: {
-//       'question': 'Do you often feel emotionally drained or notice mood swings before or during your period?',
-//       'options': ['1 (Never)','2 (Rarely)', '3 (Sometimes)', '4 (Often)', '5 (Always)']
-//     },
-//     9: {
-//       'question': 'I do not feel emotionally drained before or during my period.',
-//       'options': ['Yes', 'No']
-//     },
-//     10: {
-//       'question': 'I rarely experience mood swings related to my period.',
-//       'options': ['Yes', 'No']
-//     },
-//     11: {
-//       'question': 'I feel emotionally stable during my period.',
-//       'options': ['Yes', 'No']
-//     },
-//     12: {
-//       'question': 'Do you tend to eat more when you are stressed or emotionally upset? ',
-//       'options': ['Yes', 'No']
-//     },
-//     13: {
-//       'question': 'I do not eat more when I am stressed or emotionally upset.',
-//       'options': ['Yes', 'No']
-//     },
-//     14: {
-//       'question': 'I rarely increase my food intake during stress or emotional upset.',
-//       'options': ['Yes', 'No']
-//     },
-//     15: {
-//       'question': 'I usually maintain my regular eating habits, regardless of stress or emotions.',
-//       'options': ['Yes', 'No']
-//     },
-//     16: {
-//       'question': 'How would you rate the quality of your sleep on a scale of 1 to 10?',
-//       'options': ['0-2', '2-4', '4-6', '6-8', '8-10']
-//     },
-//     17: {
-//       'question': 'I often feel my sleep quality is poor.',
-//       'options': ['Yes', 'No']
-//     },
-//     18: {
-//       'question': 'I am generally unsatisfied with my sleep quality.', 
-//       'options': ['Yes', 'No']
-//     },
-//     19: {
-//       'question': 'I rarely feel well-rested after sleep.',
-//       'options': ['Yes', 'No']
-//     },
-//     20: {
-//       'question': 'I generally feel fresh after waking up.',
-//       'options': ['Yes', 'No']
-//     },
-//     21: {
-//       'question': 'I generally feel energetic and happy after waking up.',
-//       'options': ['Yes', 'No']
-//     },
-//     22: {
-//       'question': 'I rarely feel irritable after waking up.',
-//       'options': ['Yes', 'No']
-//     },
-//     23: {
-//       'question': 'Do you frequently have trouble falling asleep or staying asleep?',
-//       'options': ['Yes', 'No']
-//     },
-//     24: {
-//       'question': 'I generally fall asleep quickly and stay asleep through the night. ',
-//       'options': ['Yes', 'No']
-//     },
-//     25: {
-//       'question': 'I rarely have trouble with falling asleep or staying asleep. ',
-//       'options': ['Yes', 'No']
-//     },
-//     26: {
-//       'question': 'I do not experience insomnia or disrupted sleep.',
-//       'options': ['Yes', 'No']
-//     },
-//     27: {
-//       'question': 'How many times do I wake up in the middle of the night? ',
-//       'options': ['Yes', 'No']
-//     },
-//   };
-
-
-//   // 39: {
-//   //   'question': 'I generally feel calm and relaxed.',
-//   //   'options': [
-//   //     '2-4 Hr Sleep',
-//   //     '4-6 Hr Sleep',
-//   //     '6-9 Hr Sleep',
-//   //     'more then 9Hr Sleep'
-//   //   ]
-//   // },
-
 const questionTemplate = {
   0: {
-    'sectionName': 'Mental Health',
+    'sectionName': 'Mental Health & Emotional Well-being',
     'questions': {
       0: {
         'question': 'Do you often feel stressed, anxious, or down?',
-        'options': ['Always', 'Very Often', 'Sometimes', 'Never'],
+        'options': ['Yes', 'No'],
       },
       1: {
         'question': 'I rarely feel stressed, anxious, or down.',
-        'options': ['Yes', 'No'],
+        'options': ['Agree', 'Disagree'],
       },
       2: {
         'question': 'I generally feel calm and relaxed.',
-        'options': ['Yes', 'No'],
+        'options': ['Agree', 'Disagree'],
       },
       3: {
-        'question':
-            'I do not frequently experience anxiety, stress, or low mood.',
+        'question':'Do you experience mood swings or irritability frequently?',
+        'options': ['Yes', 'No'],
+      },
+      4: {
+        'question':'Do you have trouble focusing or experience brain fog?',
         'options': ['Yes', 'No'],
       },
     }
   },
   1: {
-    'sectionName': 'Physical Health',
+    'sectionName': 'Sleep Quality',
     'questions': {
       0: {
-        'question': 'Do you exercise regularly?',
+        'question': 'Do you have difficulty falling asleep or staying asleep?',
         'options': ['Yes', 'No'],
       },
       1: {
-        'question': 'Do you experience fatigue often?',
+        'question': 'Do you feel well-rested after sleep?',
+        'options': ['Yes', 'No'],
+      },
+      2: {
+        'question': 'How often do you experience daytime fatigue?',
+        'options': ['Rarely','Sometimes','Often','Always'],
+      },
+    }
+  },
+  2: {
+    'sectionName': 'Quality of Life',
+    'questions': {
+      0: {
+        'question': 'Do PCOS symptoms impact your daily life?',
+        'options': ['Mildly', 'Moderately', 'Significantly'],
+      },
+      1: {
+        'question': 'Do you avoid social situations due to PCOS-related issues?',
+        'options': ['Yes', 'No'],
+      },
+      2: {
+        'question': 'How often do you feel self-conscious about your body due to PCOS?',
+        'options': ['Never', 'Rarely', 'Sometimes', 'Often'],
+      },
+    }
+  },
+  3: {
+    'sectionName': 'Menstrual & Reproductive Health',
+    'questions': {
+      0: {
+        'question': 'Do you experience irregular or absent menstrual cycles?',
+        'options': ['Yes', 'No'],
+      },
+      1: {
+        'question': 'Have you been diagnosed with polycystic ovaries via ultrasound?',
+        'options': ['Yes', 'No'],
+      },
+      2: {
+        'question': 'Do you experience severe menstrual pain?',
+        'options': ['Mild', 'Moderate', 'Severe'],
+      },
+      3: {
+        'question': 'Have you ever undergone hormonal blood tests (testosterone, LH/FSH ratio)?',
         'options': ['Yes', 'No'],
       },
     }
-  }
+  },
+  4: {
+    'sectionName': 'Weight & Body Changes',
+    'questions': {
+      0: {
+        'question': 'Do you gain weight easily, particularly around the waist?',
+        'options': ['Yes', 'No'],
+      },
+      1: {
+        'question': 'Do you have dark patches of skin (acanthosis nigricans) on your neck, armpits, or groin?',
+        'options': ['Yes', 'No'],
+      },
+      2: {
+        'question': 'Have you been diagnosed with insulin resistance or prediabetes?',
+        'options': ['Yes', 'No'],
+      },
+    }
+  },
+  5: {
+    'sectionName': 'Hair & Skin Changes',
+    'questions': {
+      0: {
+        'question': 'Do you experience excessive facial or body hair growth (hirsutism)?',
+        'options': ['None', 'Mild', 'Moderate', 'Severe'],
+      },
+      1: {
+        'question': 'Do you suffer from severe acne that does not improve with skincare treatments?',
+        'options': ['Yes', 'No'],
+      },
+      2: {
+        'question': 'Have you noticed scalp hair thinning or hair loss (androgenic alopecia)?',
+        'options': ['Yes', 'No'],
+      },
+    }
+  },
+  6: {
+    'sectionName': 'Hormonal & Metabolic',
+    'questions': {
+      0: {
+        'question': 'Do you experience frequent sugar cravings or energy crashes?',
+        'options': ['Yes', 'No'],
+      },
+      1: {
+        'question': 'Do you feel extreme fatigue even after a full night’s sleep?',
+        'options': ['Yes', 'No'],
+      },
+      2: {
+        'question': 'Have you been diagnosed with high cholesterol, high blood pressure, or heart disease?',
+        'options': ['Yes', 'No'],
+      },
+      3: {
+        'question': 'Have you undergone adrenal hormone testing (DHEA-S, cortisol levels)?',
+        'options': ['Yes', 'No'],
+      },
+    }
+  },
+  7: {
+    'sectionName': 'Family & Medical History',
+    'questions': {
+      0: {
+        'question': 'Do any of your biological female relatives (mother, sister, aunt) have PCOS?',
+        'options': ['Yes', 'No'],
+      },
+      1: {
+        'question': 'Were you overweight or had metabolic issues from an early age?',
+        'options': ['Yes', 'No'],
+      },
+      2: {
+        'question': 'Have you taken birth control pills long-term, and did symptoms appear after stopping them?',
+        'options': ['Yes', 'No'],
+      },
+    }
+  },
+  8: {
+    'sectionName': 'Lifestyle & Stress Factors',
+    'questions': {
+      0: {
+        'question': 'How often do you experience high stress levels or anxiety?',
+        'options': ['Rarely', 'Sometimes', 'Often', 'Always'],
+      },
+      1: {
+        'question': 'Do you have digestive issues such as bloating, IBS, or food sensitivities?',
+        'options': ['Yes', 'No'],
+      },
+      2: {
+        'question': 'How often do you engage in physical activity (exercise, walking, yoga)?',
+        'options': ['Never', 'Rarely', 'Sometimes', 'Frequently'],
+      },
+    }
+  },
+  9: {
+    'sectionName': 'Employment & Work Environment',
+    'questions': {
+      0: {
+        'question': 'Does your work environment contribute to stress levels?',
+        'options': ['Yes', 'No'],
+      },
+      1: {
+        'question': 'Do you feel your work schedule allows for a healthy lifestyle (diet, exercise, and sleep)?',
+        'options': ['Yes', 'No'],
+      },
+    }
+  },
+  10: {
+    'sectionName': 'Relationships and Social Impact',
+    'questions': {
+      0: {
+        'question': 'Do you feel comfortable discussing your PCOS symptoms with others?',
+        'options': ['Yes', 'No'],
+      },
+      1: {
+        'question': 'Has PCOS affected your relationships with family or friends?',
+        'options': ['Yes', 'No'],
+      },
+    }
+  },
+  11: {
+    'sectionName': 'Self-Perception and Adaptability',
+    'questions': {
+      0: {
+        'question': 'Do you feel in control of your health despite having PCOS?',
+        'options': ['Yes', 'No'],
+      },
+      1: {
+        'question': 'Have you adapted lifestyle changes to manage PCOS symptoms effectively?',
+        'options': ['Yes', 'No'],
+      },
+    }
+  },
+  12: {
+    'sectionName': 'Treatment and Alternative Therapies',
+    'questions': {
+      0: {
+        'question': 'Have you tried medical treatments for PCOS?',
+        'options': ['Yes', 'No'],
+      },
+      1: {
+        'question': 'Are you currently using any alternative therapies (herbal, acupuncture, etc.) for PCOS?',
+        'options': ['Yes', 'No'],
+      },
+    }
+  },
 };
