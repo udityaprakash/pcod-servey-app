@@ -2,6 +2,7 @@ import 'dart:developer';
 // import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:pcos_survey_app/datafetch.dart';
 import 'package:pcos_survey_app/google_api.dart';
 import 'package:pcos_survey_app/questions_screen.dart';
 
@@ -138,7 +139,7 @@ class _SplashSignUpScreenState extends State<SplashSignUpScreen> {
       Navigator.pushReplacementNamed(
         context,
         '/display',
-        arguments: {'name': name},
+        arguments: {'name': name, 'email': email},
       );
     } catch (error) {
       log(error.toString());
@@ -218,10 +219,20 @@ class _displaysomethingState extends State<displaysomething> {
   void initState() {
     super.initState();
     if (attempt == 1) {
-      Future.delayed(const Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 3), () async {
         // setState(() {
-        Navigator.pushReplacementNamed(context, '/questions');
-        // });
+        var response =await ApiService().get('api/get-response/'+email, 
+        // {
+        //   'name': name,
+        //   'email': email,
+        // }
+        );
+        log(response.toString());
+        if(response["success"] == false){
+          Navigator.pushReplacementNamed(context, '/questions');
+        }else{
+          Navigator.pushReplacementNamed(context, '/thankyou');
+        }
       });
     }
   }
@@ -255,8 +266,9 @@ class ThankYouScreen extends StatelessWidget {
     return const Scaffold(
       body: Center(
         child: Text(
-          'Thank you for attempting this!',
+          'Thank you for attempting this Survey!',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
         ),
       ),
     );
@@ -290,35 +302,3 @@ class CustomButton extends StatelessWidget {
     );
   }
 }
-
-// class OptionButton extends StatelessWidget {
-//   final String text;
-//   final bool isSelected;
-//   final VoidCallback onPressed;
-
-//   const OptionButton({
-//     super.key,
-//     required this.text,
-//     required this.isSelected,
-//     required this.onPressed,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: double.infinity > 400 ? 400 : double.infinity,
-//       child: OutlinedButton(
-//         style: OutlinedButton.styleFrom(
-//           backgroundColor: isSelected ? Colors.black : Colors.white,
-//           foregroundColor: isSelected ? Colors.white : Colors.black,
-//           shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(7),
-//           ),
-//           side: const BorderSide(color: Colors.black),
-//         ),
-//         onPressed: onPressed,
-//         child: Text(text),
-//       ),
-//     );
-//   }
-// }
