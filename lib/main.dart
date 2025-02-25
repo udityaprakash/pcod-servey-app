@@ -11,7 +11,7 @@ void main() {
 }
 
 var name = '';
-var email = '';
+var email = 'guest@email.com';
 var attempt = 0;
 
 bool checkPlatform() {
@@ -132,8 +132,8 @@ class _SplashSignUpScreenState extends State<SplashSignUpScreen> {
       await GoogleApi.signIn();
       log(GoogleApi.displayName.toString());
 
-      name = GoogleApi.displayName ?? 'Unknown User';
-      email = GoogleApi.email ?? 'No Email';
+      name = GoogleApi.displayName ?? 'Guest User';
+      email = GoogleApi.email ?? 'guest@email.com';
       attempt = 1;
 
       Navigator.pushReplacementNamed(
@@ -192,21 +192,6 @@ class _SplashSignUpScreenState extends State<SplashSignUpScreen> {
   }
 }
 
-// class googleapi {
-//   static final _googleSignIn = GoogleSignIn();
-//   static Future<GoogleSignInAccount?> signIn() => _googleSignIn.signIn();
-//   static GoogleSignInAccount? userinfo() => _googleSignIn.currentUser;
-//   static Future<void> signOut() => _googleSignIn.signOut();
-// }
-
-// class googleapiweb {
-//   static final _googleSignIn = GoogleSignIn(
-//     clientId: '710390705852-r4tfotgabfcr4iqpbqjrnu04hkceh17m.apps.googleusercontent.com'
-//     );
-//   static Future<GoogleSignInAccount?> signIn() => _googleSignIn.signIn();
-//   static GoogleSignInAccount? userinfo() => _googleSignIn.currentUser;
-//   static Future<void> signOut() => _googleSignIn.signOut();
-// }
 
 class displaysomething extends StatefulWidget {
   const displaysomething({super.key});
@@ -216,23 +201,29 @@ class displaysomething extends StatefulWidget {
 }
 
 class _displaysomethingState extends State<displaysomething> {
+  bool _isloading = false;
   void initState() {
     super.initState();
     if (attempt == 1) {
-      Future.delayed(const Duration(seconds: 3), () async {
-        // setState(() {
-        var response =await ApiService().get('api/get-response/'+email, 
-        // {
-        //   'name': name,
-        //   'email': email,
-        // }
+      Future.delayed(const Duration(seconds: 1), () async {
+      log("code is here");
+        var response = await ApiService().get(
+          'api/get-response/' + email,
         );
+        setState(() {
+          _isloading = true;
+        });
+        // setState(() {
         log(response.toString());
-        if(response["success"] == false){
+        if (response["success"] == false) {
           Navigator.pushReplacementNamed(context, '/questions');
-        }else{
+        } else {
           Navigator.pushReplacementNamed(context, '/thankyou');
         }
+      });
+    }else{
+      Future.delayed(const Duration(seconds: 2), () async {
+        Navigator.pushReplacementNamed(context, '/splash');
       });
     }
   }
@@ -245,18 +236,30 @@ class _displaysomethingState extends State<displaysomething> {
     String name = args?['name'] ?? 'Guest';
 
     return Scaffold(
-      appBar: AppBar(title: Text("Info Screen")),
+      // appBar: AppBar(title: Text("Info Screen")),
       body: Center(
-        child: Text(
-          "Welcome, $name!",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Welcome, $name!",
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10,),
+            _isloading ? Text(
+              "Survey is loading...Please hang tight",
+              style: TextStyle(fontSize: 15),
+            ) : Container(),
+            SizedBox(height: 5,),
+            _isloading ? CircularProgressIndicator() : Container(),
+            
+          ],
         ),
       ),
     );
   }
 }
-
-
 
 class ThankYouScreen extends StatelessWidget {
   const ThankYouScreen({super.key});
@@ -280,12 +283,9 @@ class CustomButton extends StatelessWidget {
   final VoidCallback? onPressed;
   // final bool? isWeb;
 
-  const CustomButton({
-    super.key,
-    required this.text,
-    this.onPressed
-    // this.isWeb,
-  });
+  const CustomButton({super.key, required this.text, this.onPressed
+      // this.isWeb,
+      });
 
   @override
   Widget build(BuildContext context) {
