@@ -1,0 +1,20 @@
+@echo off
+"C:\\Users\\berry\\AppData\\Local\\Android\\sdk\\cmake\\3.22.1\\bin\\cmake.exe" ^
+  "-HC:\\src\\flutter\\packages\\flutter_tools\\gradle\\src\\main\\groovy" ^
+  "-DCMAKE_SYSTEM_NAME=Android" ^
+  "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON" ^
+  "-DCMAKE_SYSTEM_VERSION=21" ^
+  "-DANDROID_PLATFORM=android-21" ^
+  "-DANDROID_ABI=arm64-v8a" ^
+  "-DCMAKE_ANDROID_ARCH_ABI=arm64-v8a" ^
+  "-DANDROID_NDK=C:\\Users\\berry\\AppData\\Local\\Android\\sdk\\ndk\\26.3.11579264" ^
+  "-DCMAKE_ANDROID_NDK=C:\\Users\\berry\\AppData\\Local\\Android\\sdk\\ndk\\26.3.11579264" ^
+  "-DCMAKE_TOOLCHAIN_FILE=C:\\Users\\berry\\AppData\\Local\\Android\\sdk\\ndk\\26.3.11579264\\build\\cmake\\android.toolchain.cmake" ^
+  "-DCMAKE_MAKE_PROGRAM=C:\\Users\\berry\\AppData\\Local\\Android\\sdk\\cmake\\3.22.1\\bin\\ninja.exe" ^
+  "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=D:\\projects\\flutter\\pcod-servey-app\\build\\app\\intermediates\\cxx\\Debug\\44254r3w\\obj\\arm64-v8a" ^
+  "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=D:\\projects\\flutter\\pcod-servey-app\\build\\app\\intermediates\\cxx\\Debug\\44254r3w\\obj\\arm64-v8a" ^
+  "-DCMAKE_BUILD_TYPE=Debug" ^
+  "-BD:\\projects\\flutter\\pcod-servey-app\\android\\app\\.cxx\\Debug\\44254r3w\\arm64-v8a" ^
+  -GNinja ^
+  -Wno-dev ^
+  --no-warn-unused-cli
