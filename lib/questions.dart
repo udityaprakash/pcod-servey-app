@@ -1,5 +1,26 @@
 const questionTemplate = {
   0: {
+    'sectionName': 'General Information',
+    'questions': {
+      0: {
+        'question': 'what is your age Range?',
+        'options': ['15-20', '21-30', '31-40', '41-50', '51+'],
+      },
+      1: {
+        'question': 'what is your height Range?',
+        'options': ['<5ft', '5ft-5.5ft', '5.5ft-6ft', '6ft+'],
+      },
+      2: {
+        'question': 'what is your blood group?',
+        'options': ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+      },
+      3: {
+        'question':'Menstrual Cycle interval in months?',
+        'options': ['1', '2', 'more than 2'],
+      }
+    }
+  },
+  1: {
     'sectionName': 'Mental Health & Emotional Well-being',
     'questions': {
       0: {
@@ -24,7 +45,7 @@ const questionTemplate = {
       },
     }
   },
-  1: {
+  2: {
     'sectionName': 'Sleep Quality',
     'questions': {
       0: {
@@ -41,7 +62,7 @@ const questionTemplate = {
       },
     }
   },
-  2: {
+  3: {
     'sectionName': 'Quality of Life',
     'questions': {
       0: {
@@ -58,7 +79,7 @@ const questionTemplate = {
       },
     }
   },
-  3: {
+  4: {
     'sectionName': 'Menstrual & Reproductive Health',
     'questions': {
       0: {
@@ -79,7 +100,7 @@ const questionTemplate = {
       },
     }
   },
-  4: {
+  5: {
     'sectionName': 'Weight & Body Changes',
     'questions': {
       0: {
@@ -96,7 +117,7 @@ const questionTemplate = {
       },
     }
   },
-  5: {
+  6: {
     'sectionName': 'Hair & Skin Changes',
     'questions': {
       0: {
@@ -113,7 +134,7 @@ const questionTemplate = {
       },
     }
   },
-  6: {
+  7: {
     'sectionName': 'Hormonal & Metabolic',
     'questions': {
       0: {
@@ -134,7 +155,7 @@ const questionTemplate = {
       },
     }
   },
-  7: {
+  8: {
     'sectionName': 'Family & Medical History',
     'questions': {
       0: {
@@ -151,7 +172,7 @@ const questionTemplate = {
       },
     }
   },
-  8: {
+  9: {
     'sectionName': 'Lifestyle & Stress Factors',
     'questions': {
       0: {
@@ -168,7 +189,7 @@ const questionTemplate = {
       },
     }
   },
-  9: {
+  10: {
     'sectionName': 'Employment & Work Environment',
     'questions': {
       0: {
@@ -181,7 +202,7 @@ const questionTemplate = {
       },
     }
   },
-  10: {
+  11: {
     'sectionName': 'Relationships and Social Impact',
     'questions': {
       0: {
@@ -194,7 +215,7 @@ const questionTemplate = {
       },
     }
   },
-  11: {
+  12: {
     'sectionName': 'Self-Perception and Adaptability',
     'questions': {
       0: {
@@ -207,7 +228,7 @@ const questionTemplate = {
       },
     }
   },
-  12: {
+  13: {
     'sectionName': 'Treatment and Alternative Therapies',
     'questions': {
       0: {
