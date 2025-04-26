@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:pcos_survey_app/datafetch.dart';
 import 'package:pcos_survey_app/google_api.dart';
 import 'package:pcos_survey_app/questions_screen.dart';
+import 'package:pcos_survey_app/testpcod.dart';
 
 void main() {
   runApp(const MyApp());
@@ -68,6 +69,7 @@ class MyApp extends StatelessWidget {
         '/display': (context) => displaysomething(),
         '/questions': (context) => const QuestionScreen(),
         '/thankyou': (context) => const ThankYouScreen(),
+        '/testpcod': (context) => HealthForm(),
       },
     );
   }
@@ -174,12 +176,19 @@ class _SplashSignUpScreenState extends State<SplashSignUpScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 400),
+                  const SizedBox(height: 350),
                   CustomButton(
-                    text: 'Continue with Google',
+                    text: 'Continue with Google to survey',
                     onPressed: () {
                       _handleSignIn(context);
                       // Navigator.pushNamed(context, '/questions');
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  CustomButton(
+                    text: 'Get PCOD tested',
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/testpcod');
                     },
                   ),
                 ],
@@ -191,7 +200,6 @@ class _SplashSignUpScreenState extends State<SplashSignUpScreen> {
     );
   }
 }
-
 
 class displaysomething extends StatefulWidget {
   const displaysomething({super.key});
@@ -206,7 +214,7 @@ class _displaysomethingState extends State<displaysomething> {
     super.initState();
     if (attempt == 1) {
       Future.delayed(const Duration(seconds: 1), () async {
-      log("code is here");
+        log("code is here");
         var response = await ApiService().get(
           'api/get-response/' + email,
         );
@@ -221,7 +229,7 @@ class _displaysomethingState extends State<displaysomething> {
           Navigator.pushReplacementNamed(context, '/thankyou');
         }
       });
-    }else{
+    } else {
       Future.delayed(const Duration(seconds: 2), () async {
         Navigator.pushReplacementNamed(context, '/splash');
       });
@@ -246,14 +254,19 @@ class _displaysomethingState extends State<displaysomething> {
               "Welcome, $name!",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10,),
-            _isloading ? Text(
-              "Survey is loading...Please hang tight",
-              style: TextStyle(fontSize: 15),
-            ) : Container(),
-            SizedBox(height: 5,),
+            SizedBox(
+              height: 10,
+            ),
+            _isloading
+                ? Text(
+                    "Survey is loading...Please hang tight",
+                    style: TextStyle(fontSize: 15),
+                  )
+                : Container(),
+            SizedBox(
+              height: 5,
+            ),
             _isloading ? CircularProgressIndicator() : Container(),
-            
           ],
         ),
       ),
@@ -266,13 +279,23 @@ class ThankYouScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text(
-          'Thank you for attempting this Survey!',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center,
-        ),
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            'Thank you for attempting this Survey!',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 20),
+          CustomButton(
+              text: 'Test PCOD',
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, '/testpcod');
+              })
+        ],
       ),
     );
   }
