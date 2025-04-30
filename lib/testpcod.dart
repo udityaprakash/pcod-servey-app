@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pcos_survey_app/datafetch.dart';
 
 class HealthForm extends StatefulWidget {
   @override
@@ -16,6 +17,7 @@ class _HealthFormState extends State<HealthForm> {
       TextEditingController();
   final TextEditingController menstrualDurationController =
       TextEditingController();
+  var isloading = false;
 
   Map<String, String> yesNoFields = {
     "Recent Weight Gain": "0",
@@ -63,26 +65,52 @@ class _HealthFormState extends State<HealthForm> {
                   .map((field) => buildYesNoDropdown(field))
                   .toList(),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    Map<String, dynamic> formData = {
-                      "Age": int.tryParse(ageController.text) ?? 0,
-                      "Weight": int.tryParse(weightController.text) ?? 0,
-                      "Height": int.tryParse(heightController.text) ?? 0,
-                      "Blood Group": int.tryParse(selectedBloodGroup) ?? 11,
-                      "Menstrual Cycle Interval":
-                          int.tryParse(menstrualCycleController.text) ?? 0,
-                      "Menstrual Duration (Days)":
-                          int.tryParse(menstrualDurationController.text) ?? 0,
-                      ...yesNoFields,
-                    };
+              isloading
+                  ? CircularProgressIndicator()
+                  : ElevatedButton(
+                      onPressed: () async {
+                        // ScaffoldMessenger.of(context).showSnackBar(
+                        //   SnackBar(
+                        //     content: Text('{"pcos_diagnosis": 1}'),
+                        //   ),
+                        // );
+                        if (_formKey.currentState!.validate()) {
+                          Map<String, dynamic> formData = {
+                            "Age": int.tryParse(ageController.text) ?? 0,
+                            "Weight": int.tryParse(weightController.text) ?? 0,
+                            "Height": int.tryParse(heightController.text) ?? 0,
+                            "Blood Group":
+                                int.tryParse(selectedBloodGroup) ?? 11,
+                            "Menstrual Cycle Interval":
+                                int.tryParse(menstrualCycleController.text) ??
+                                    0,
+                            "Menstrual Duration (Days)": int.tryParse(
+                                    menstrualDurationController.text) ??
+                                0,
+                            ...yesNoFields,
+                          };
 
-                    print(formData);
-                  }
-                },
-                child: Text('Submit'),
-              ),
+                          setState(() {
+                            isloading = true;
+                          });
+
+                          print(formData);
+                          var resp = await ApiService().post(
+                              "/predict", formData,
+                              baseurl: "pcos-deployment.onrender.com");
+                          print(resp);
+                          setState(() {
+                            isloading = false;
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('{"pcos_diagnosis": 1}'),
+                            ),
+                          );
+                        }
+                      },
+                      child: Text('Submit'),
+                    ),
             ],
           ),
         ),
