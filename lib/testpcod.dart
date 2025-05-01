@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:pcos_survey_app/datafetch.dart';
 
 class HealthForm extends StatefulWidget {
@@ -19,16 +23,16 @@ class _HealthFormState extends State<HealthForm> {
       TextEditingController();
   var isloading = false;
 
-  Map<String, String> yesNoFields = {
-    "Recent Weight Gain": "0",
-    "Skin Darkening": "0",
-    "Hair Loss": "0",
-    "Acne": "0",
-    "Regular Fast Food Consumption": "0",
-    "Regular Exercise": "0",
-    "Mood Swings": "0",
-    "Regular Periods": "0",
-    "Excessive Body/Facial Hair": "0",
+  Map<String, int> yesNoFields = {
+    "Recent Weight Gain": 0,
+    "Skin Darkening": 0,
+    "Hair Loss": 0,
+    "Acne": 0,
+    "Regular Fast Food Consumption": 0,
+    "Regular Exercise": 0,
+    "Mood Swings": 0,
+    "Regular Periods": 0,
+    "Excessive Body/Facial Hair": 0,
   };
 
   final List<Map<String, dynamic>> bloodGroups = [
@@ -45,7 +49,7 @@ class _HealthFormState extends State<HealthForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Health Survey Form')),
+      appBar: AppBar(title: Text('PCOD Prediction')),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
         child: Form(
@@ -74,6 +78,7 @@ class _HealthFormState extends State<HealthForm> {
                         //     content: Text('{"pcos_diagnosis": 1}'),
                         //   ),
                         // );
+                        // _formKey.currentState!.validate()
                         if (_formKey.currentState!.validate()) {
                           Map<String, dynamic> formData = {
                             "Age": int.tryParse(ageController.text) ?? 0,
@@ -88,25 +93,62 @@ class _HealthFormState extends State<HealthForm> {
                                     menstrualDurationController.text) ??
                                 0,
                             ...yesNoFields,
+                            // ...yesNoFields,
                           };
+
+                          // Map<String, dynamic> formData2 = {
+                          //   "Age": 20,
+                          //   "Weight": 170,
+                          //   "Height": 170,
+                          //   "Blood Group": 11,
+                          //   "Menstrual Cycle Interval": 2,
+                          //   "Recent Weight Gain": 0,
+                          //   "Excessive Body/Facial Hair": 0,
+                          //   "Skin Darkening": 0,
+                          //   "Hair Loss": 1,
+                          //   "Acne": 0,
+                          //   "Regular Fast Food Consumption": 0,
+                          //   "Regular Exercise": 1,
+                          //   "PCOS Diagnosis": 0,
+                          //   "Mood Swings": 0,
+                          //   "Regular Periods": 0,
+                          //   "Menstrual Duration (Days)": 2,
+                          // };
 
                           setState(() {
                             isloading = true;
                           });
 
-                          print(formData);
-                          var resp = await ApiService().post(
-                              "/predict", formData,
-                              baseurl: "pcos-deployment.onrender.com");
-                          print(resp);
+                          log(formData.toString());
+                          final response = await http.post(
+                            Uri.https(
+                                "pcos-deployment2.onrender.com", "/predict"),
+                            body: json.encode(formData),
+                            headers: {'Content-Type': 'application/json'},
+                          );
+
+                          log(await response.toString());
+                          log('Status: ${response.statusCode}');
+                          log('Body: ${response.body}');
+                          var res = json.decode(response.body);
                           setState(() {
                             isloading = false;
                           });
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('{"pcos_diagnosis": 1}'),
-                            ),
-                          );
+                          if (res['pcos_diagnosis'] == 1) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content:
+                                    Text('Your PCOS Diagnosis is Positive'),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content:
+                                    Text('Your PCOS Diagnosis is Positive'),
+                              ),
+                            );
+                          }
                         }
                       },
                       child: Text('Submit'),
@@ -164,15 +206,15 @@ class _HealthFormState extends State<HealthForm> {
   Widget buildYesNoDropdown(String label) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: DropdownButtonFormField<String>(
+      child: DropdownButtonFormField<int>(
         value: yesNoFields[label],
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(),
         ),
-        items: [
-          DropdownMenuItem(value: "0", child: Text("No")),
-          DropdownMenuItem(value: "1", child: Text("Yes")),
+        items: const [
+          DropdownMenuItem(value: 0, child: Text("No")),
+          DropdownMenuItem(value: 1, child: Text("Yes")),
         ],
         onChanged: (value) {
           setState(() {
