@@ -145,7 +145,7 @@ class _HealthFormState extends State<HealthForm> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content:
-                                    Text('Your PCOS Diagnosis is Positive'),
+                                    Text('Your PCOS Diagnosis is Negative'),
                               ),
                             );
                           }

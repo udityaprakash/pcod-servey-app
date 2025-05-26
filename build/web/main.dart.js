@@ -81550,7 +81550,7 @@ l.aa(new A.ah2(l))
 l=q.b
 k=t.Pu
 if(J.d(J.jl(m,"pcos_diagnosis"),1))l.am(k).f.Jd(A.apx(null,null,null,null,null,B.V,null,A.dj("Your PCOS Diagnosis is Positive",null,null,null,null,null,null),null,B.mb,null,null,null,null,null,null,null,null,null))
-else l.am(k).f.Jd(A.apx(null,null,null,null,null,B.V,null,A.dj("Your PCOS Diagnosis is Positive",null,null,null,null,null,null),null,B.mb,null,null,null,null,null,null,null,null,null))
+else l.am(k).f.Jd(A.apx(null,null,null,null,null,B.V,null,A.dj("Your PCOS Diagnosis is Negative",null,null,null,null,null,null),null,B.mb,null,null,null,null,null,null,null,null,null))
 case 3:return A.L(null,r)}})
 return A.M($async$$0,r)},
 $S:21}
